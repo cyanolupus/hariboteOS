@@ -1,7 +1,6 @@
 #include "bootpack.h"
 
-void init_palette(void)
-{
+void init_palette(void) {
 	static unsigned char table_rgb[16*3] = {
 		0x00, 0x00, 0x00, /* 0:black */
 		0xff, 0x00, 0x00, /* 1:light red */
@@ -24,8 +23,7 @@ void init_palette(void)
 	return;
 }
 
-void set_palette(int start, int end, unsigned char *rgb)
-{
+void set_palette(int start, int end, unsigned char *rgb) {
 	int i, eflags;
 	eflags = io_load_eflags(); /* store flags */
 	io_cli(); /* ban write flags */
@@ -40,8 +38,7 @@ void set_palette(int start, int end, unsigned char *rgb)
 	return;
 }
 
-void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1)
-{
+void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1) {
 	int x, y;
 	for (y = y0; y <= y1; y++) {
 		for (x = x0; x <= x1; x++) {
@@ -51,8 +48,7 @@ void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, i
 	return;
 }
 
-void init_screen8(char *vram, int xsize, int ysize)
-{
+void init_screen8(char *vram, int xsize, int ysize) {
 	boxfill8(vram, xsize, COL8_008484, 0, 0, xsize - 1, ysize - 29);
 	boxfill8(vram, xsize, COL8_C6C6C6, 0, ysize - 28, xsize - 1, ysize - 28);
 	boxfill8(vram, xsize, COL8_FFFFFF, 0, ysize - 27, xsize - 1, ysize - 27);
@@ -73,8 +69,7 @@ void init_screen8(char *vram, int xsize, int ysize)
 	return;
 }
 
-void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
-{
+void putfont8(char *vram, int xsize, int x, int y, char c, char *font) {
 	int i;
 	char *p, d;
 	for (i = 0; i < 16; i++) {
@@ -92,8 +87,7 @@ void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
 	return;
 }
 
-void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s)
-{
+void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s) {
 	extern char hankaku[4096];
 	for (; *s != 0x00; s++) {
 		putfont8(vram, xsize, x, y, c, hankaku + *s * 16);
@@ -102,8 +96,7 @@ void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s
 	return;
 }
 
-void init_mouse_cursor8(char *mouse, char bc)
-{
+void init_mouse_cursor8(char *mouse, char bc) {
 	static char cursor[16][16] = {
 		"**************..",
 		"*OOOOOOOOOOO*...",
@@ -140,8 +133,7 @@ void init_mouse_cursor8(char *mouse, char bc)
 	return;
 }
 
-void putblock8_8(char *vram, int vxsize, int pxsize, int pysize, int px0, int py0, char *buf, int bxsize)
-{
+void putblock8_8(char *vram, int vxsize, int pxsize, int pysize, int px0, int py0, char *buf, int bxsize) {
 	int x, y;
 
 	for (y = 0; y < pysize; y++) {
