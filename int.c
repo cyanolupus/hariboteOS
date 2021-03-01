@@ -1,6 +1,7 @@
 #include "bootpack.h"
 
 struct FIFO8 keyfifo;
+struct FIFO8 mousefifo;
 
 void wait_KBC_sendready(void) {
     for (;;) {
@@ -71,18 +72,19 @@ int fifo8_status(struct FIFO8 *fifo) {
 
 void inthandler21(int *esp) {
     unsigned char data;
-    io_out8(PIC0_OCW2, 0x61);
+    io_out8(PIC0_OCW2, 0x61); // PIC0に通知
     data = io_in8(PORT_KEYDAT);
     fifo8_put(&keyfifo, data);
     return;
 }
 
 void inthandler2c(int *esp) {
-    struct BOOTINFO *binfo = (struct BOOTINFO *) ADR_BOOTINFO;
-    putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, "INT 2C (IRQ-12) : PS/2 mouse");
-    for (;;) {
-        io_hlt();
-    }
+    unsigned char data;
+    io_out8(PIC1_OCW2, 0x64); // PIC1に通知
+    io_out8(PIC0_OCW2, 0x62); // PIC0に通知
+    data = io_in8(PORT_KEYDAT);
+    fifo8_put(&mousefifo, data);
+    return;
 }
 
 void inthandler27(int *esp) {
