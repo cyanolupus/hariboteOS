@@ -89,6 +89,14 @@ void init_gdtidt(void);
 #define PIC1_ICW4		0x00a1
 
 #define PORT_KEYDAT		0x0060
+#define PORT_KEYSTA		0x0064
+#define PORT_KEYCMD		0x0064
+#define KEYSTA_SEND_NOTREADY 0x02
+#define KEYCMD_WRITE_MODE 0x60
+#define KBC_MODE		0x47
+#define KEYCMD_SENDTO_MOUSE 0xd4
+#define MOUSECMD_ENABLE	0xf4
+
 #define FRAGS_OVERRUN	0x0001
 
 struct FIFO8 {
@@ -104,3 +112,6 @@ void fifo8_init(struct FIFO8 *fifo, int size, unsigned char *buf);
 int fifo8_put(struct FIFO8 *fifo, unsigned char data);
 int fifo8_get(struct FIFO8 *fifo);
 int fifo8_status(struct FIFO8 *fifo);
+void wait_KBC_sendready(void);
+void init_keyboard(void);
+void enable_mouse(void);

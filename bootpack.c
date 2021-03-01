@@ -8,15 +8,6 @@ void HariMain(void) {
 	char s[40], mcursor[256], keybuf[32];
 	int mx, my, i, j;
 
-	init_gdtidt();
-	init_pic();
-	io_sti();
-
-	io_out8(PIC0_IMR, 0xf9); /* pic1とキーボードを有効化 */
-	io_out8(PIC1_IMR, 0xef); /* マウスを有効化 */
-
-	fifo8_init(&keyfifo, 32, keybuf);
-
 	init_palette();
 	init_screen8(binfo->vram, binfo->scrnx, binfo->scrny);
 
@@ -27,6 +18,18 @@ void HariMain(void) {
 	sprintf(s, "(%d,%d)", mx, my);
 	putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
 	putfonts8_asc(binfo->vram, binfo->scrnx, 100, 10, COL8_FF00FF, "Kawaisou ha kawaii");
+
+	init_gdtidt();
+	init_pic();
+	io_sti();
+
+	io_out8(PIC0_IMR, 0xf9); /* pic1とキーボードを有効化 */
+	io_out8(PIC1_IMR, 0xef); /* マウスを有効化 */
+
+	fifo8_init(&keyfifo, 32, keybuf);
+	
+	init_keyboard();
+	enable_mouse();
 
 	for (;;) {
 		io_cli();
