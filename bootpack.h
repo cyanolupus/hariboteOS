@@ -94,8 +94,8 @@ void init_gdtidt(void);
 #define PORT_KEYDAT 0x0060
 
 struct KEYBUF {
-    unsigned char data[4];
-	int next;
+    unsigned char data[32];
+	int next_r, next_w, len;
 };
 
 void init_pic(void);
