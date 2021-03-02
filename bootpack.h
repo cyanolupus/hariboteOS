@@ -104,6 +104,11 @@ struct FIFO8 {
 	int p, q, size, free, flags;
 };
 
+struct MOUSE_DEC {
+	unsigned char buf[3], phase;
+};
+
+
 void init_pic(void);
 void inthandler21(int *esp);
 void inthandler2c(int *esp);
@@ -114,4 +119,5 @@ int fifo8_get(struct FIFO8 *fifo);
 int fifo8_status(struct FIFO8 *fifo);
 void wait_KBC_sendready(void);
 void init_keyboard(void);
-void enable_mouse(void);
+void enable_mouse(struct MOUSE_DEC *mdec);
+int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
