@@ -31,6 +31,10 @@ void HariMain(void) {
 	putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
 	putfonts8_asc(binfo->vram, binfo->scrnx, 100, 10, COL8_FF00FF, "Kawaisou ha kawaii");
 
+	i = memtest(0x00400000, 0xbfffffff) / (1024 * 1024);
+	sprintf(s, "memory %dMB", i);
+	putfonts8_asc(binfo->vram, binfo->scrnx, 0, 32, COL8_FFFFFF, s);
+
 	enable_mouse(&mdec);
 
 	for (;;) {
