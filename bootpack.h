@@ -38,7 +38,6 @@ void asm_inthandler27(void);
 #define COL8_840084 13
 #define COL8_008484	14
 #define COL8_848484	15
-
 void init_palette(void);
 void set_palette(int start, int end, unsigned char *rgb);
 void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
@@ -63,13 +62,11 @@ struct SEGMENT_DESCRIPTOR {
 	char base_mid, access_right;
 	char limit_high, base_high;
 };
-
 struct GATE_DESCRIPTOR {
 	short offset_low, selector;
 	char dw_count, access_right;
 	short offset_high;
 };
-
 void set_segmdesc(struct SEGMENT_DESCRIPTOR *sd, unsigned int limit, int base, int ar);
 void set_gatedesc(struct GATE_DESCRIPTOR *gd, int offset, int selector, int ar);
 void init_gdtidt(void);
@@ -87,14 +84,11 @@ void init_gdtidt(void);
 #define PIC1_ICW2		0x00a1
 #define PIC1_ICW3		0x00a1
 #define PIC1_ICW4		0x00a1
-
 #define FRAGS_OVERRUN	0x0001
-
 struct FIFO8 {
     unsigned char *buf;
 	int p, q, size, free, flags;
 };
-
 void init_pic(void);
 void inthandler21(int *esp);
 void inthandler2c(int *esp);
@@ -111,17 +105,15 @@ int fifo8_status(struct FIFO8 *fifo);
 #define PORT_KEYDAT		0x0060
 #define PORT_KEYSTA		0x0064
 #define PORT_KEYCMD		0x0064
-
 void wait_KBC_sendready(void);
 void init_keyboard(void);
 
 /* to mouse.c */
 #define KEYCMD_SENDTO_MOUSE 0xd4
 #define MOUSECMD_ENABLE	0xf4
-
 struct MOUSE_DEC {
 	unsigned char buf[3], phase;
+	int x, y, btn;
 };
-
 void enable_mouse(struct MOUSE_DEC *mdec);
 int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);

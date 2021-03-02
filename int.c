@@ -6,8 +6,8 @@ struct FIFO8 mousefifo;
 void fifo8_init(struct FIFO8 *fifo, int size, unsigned char *buf) {
     fifo->size = size;
     fifo->buf = buf;
-    fifo->free = size; // free
-    fifo->flags = 0;
+    fifo->free = size;
+    fifo->flags = 0; // status
     fifo->p = 0; // write
     fifo->q = 0; // read
     return;
@@ -15,7 +15,7 @@ void fifo8_init(struct FIFO8 *fifo, int size, unsigned char *buf) {
 
 int fifo8_put(struct FIFO8 *fifo, unsigned char data) {
     if (fifo->free == 0) {
-        fifo->flags |= FRAGS_OVERRUN;
+        fifo->flags |= FRAGS_OVERRUN; // ORをとることで異常フラグを立てる
         return -1;
     }
     fifo->buf[fifo->p] = data;
